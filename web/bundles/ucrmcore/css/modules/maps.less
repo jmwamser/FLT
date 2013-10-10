@@ -1,0 +1,23 @@
+#territory_map {
+	width: 100%;
+	height: @mapHeight;
+}
+
+.Territory {
+	&.map,
+	&.coords {
+		height: @mapHeight;
+		body {
+			height: @mapHeight;
+			& > .container {
+				height: @mapHeight;
+				& > .row {
+					height: @mapHeight;
+					& > .col-md-9 {
+						height: @mapHeight;
+					}
+				}
+			}
+		}
+	}
+}

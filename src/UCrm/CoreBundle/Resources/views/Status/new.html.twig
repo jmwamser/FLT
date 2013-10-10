@@ -1,0 +1,17 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Status/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <h1>Status creation</h1>
+
+    <form action="{{ path('statuses_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </p>
+    </form>
+</ul>
+{% endblock %}

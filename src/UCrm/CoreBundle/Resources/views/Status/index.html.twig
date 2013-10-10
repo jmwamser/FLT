@@ -1,0 +1,35 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Status/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h1>Status list</h1>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('statuses_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.status }}</td>
+                <td>
+                    <a href="{{ path('statuses_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
+                    <a href="{{ path('statuses_edit', { 'id': entity.id }) }}" class="btn btn-warning">edit</a>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

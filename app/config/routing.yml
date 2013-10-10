@@ -1,0 +1,4 @@
+u_crm_core:
+    resource: "@UCrmCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /

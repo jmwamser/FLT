@@ -1,0 +1,42 @@
+{% block form_row %}
+{% spaceless %}
+
+	<div class="form-group">
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {% if 'datetime' not in block_prefixes %}
+        	{{ form_widget(form, { 'attr': {'class': 'form-control'} }) }}
+        {% else %}
+        	{{ form_widget(form) }}
+        {% endif %}
+    </div>
+
+{% endspaceless %}
+{% endblock %}
+
+{% block datetime_widget %}
+	{% set attr = attr|merge({'class': (attr.class is defined) ? attr.class ~ " form-control" : "form-control"}) %}
+	<input type="datetime-local" {{ block('widget_attributes') }} />
+{% endblock %}
+
+{% block date_widget %}
+    {% set attr = attr|merge({'class': (attr.class is defined) ? attr.class ~ " form-control" : "form-control"}) %}
+    <input type="date" {{ block('widget_attributes') }} />
+{% endblock %}
+
+{% block submit_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({'class': "btn btn-primary"}) %}
+    {{ block('button_widget') }}
+{% endspaceless %}
+{% endblock %}
+
+{% block button_widget %}
+{% spaceless %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    {% set attr = attr|merge({'class': (attr.class is defined) ? attr.class : "btn btn-default"}) %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+{% endspaceless %}
+{% endblock %}

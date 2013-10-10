@@ -1,0 +1,16 @@
+services:
+  ucrm.twig.controller_action_extension:
+    class: UCrm\CoreBundle\Twig\Extension\ControllerActionExtension
+    calls:
+      - [setRequest, ["@?request="]]
+    tags:
+      - { name: twig.extension }
+  ucrm_core_bundle.form.client_type:
+    class: UCrm\CoreBundle\Form\ClientType
+    arguments:
+      - @doctrine.orm.entity_manager
+  core.auth.action_listener:
+    class: UCrm\CoreBundle\EventListener\AuthListener
+    arguments: []
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

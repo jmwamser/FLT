@@ -1,0 +1,22 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Territory/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h1>New Territory</h1>
+    </div>
+
+    <form action="{{ path('territories_create') }}" method="post" {{ form_enctype(form) }}>
+        <div class="row">
+            <div class="col-md-8">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </p>
+    </form>
+{% endblock %}

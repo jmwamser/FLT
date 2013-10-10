@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    
+    <parameters>
+        <parameter key="u_crm_core.form.client_type">UCrm\CoreBundle\Form\ClientType</parameter>
+    </parameters>
+
+    <!--
+    <services>
+        <service id="u_crm_core.example" class="%u_crm_core.example.class%">
+            <argument type="service" id="service_id" />
+            <argument>plain_value</argument>
+            <argument>%parameter_name%</argument>
+        </service>
+    </services>
+    -->
+
+    <services>
+        <service id="u_crm_core.form" class="%u_crm_core.form.client_type%">
+            <argument>@doctrine.orm.entity_manager</argument>
+        </service>
+    </services>
+
+</container>

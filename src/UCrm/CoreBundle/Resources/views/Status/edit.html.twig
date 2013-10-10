@@ -1,0 +1,27 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Status/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="top-btns">
+        <a href="{{ path('statuses') }}" class="btn btn-default">
+            Cancel
+        </a>
+        <form action="{{ path('statuses_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+    <h1>Status edit</h1>
+
+    <form action="{{ path('statuses_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        <input type="hidden" name="_method" value="PUT" />
+        {{ form_widget(edit_form) }}
+        <p>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </p>
+    </form>
+{% endblock %}

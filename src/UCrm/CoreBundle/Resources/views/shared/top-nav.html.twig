@@ -1,0 +1,13 @@
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="/">FLT</a>
+	</div>
+  	<div class="collapse navbar-collapse navbar-ex1-collapse">
+	    <ul class="nav navbar-nav">
+	      <li{% if currentPath in path('people') %} class="active"{% endif %}><a href="{{ path('people') }}">People</a></li>
+	      <li{% if currentPath in path('territories') %} class="active"{% endif %}><a href="{{ path('territories') }}">Territory</a></li>
+	      <li{% if currentPath in path('statuses') %} class="active"{% endif %}><a href="{{ path('statuses') }}">Settings</a></li>
+	      <li{% if currentPath in path('users') %} class="active"{% endif %}><a href="{{ path('users') }}">Users</a></li>
+	    </ul>
+	</div>
+</div>

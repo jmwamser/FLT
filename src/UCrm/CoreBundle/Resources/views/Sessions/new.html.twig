@@ -1,0 +1,32 @@
+{% extends "UCrmCoreBundle::layouts/auth.html.twig" %}
+
+{% block body -%}
+	<form action="{{ path('signin') }}" method="post" {{ form_enctype(form) }} class="form-horizontal" role="form">
+		{# if ($this->session->has('flash.error')): ?>
+			<div class="alert alert-error fade in">
+				<button type="button" class="close" data-dismiss="alert">x</button>
+				<strong>Error!</strong> <?php echo $this->session->read('flash.error'); ?>
+			</div>
+		<?php endif; #}
+		<legend>Sign In</legend>
+		<div class="control-group">
+			{{ form_label(form.email, null, { "label_attr" : { "class": "control-label" }}) }}
+			<div class="controls">
+				{{ form_widget(form.email, { "attr" : { "class" : "form-control" }}) }}
+			</div>
+		</div>
+		<div class="control-group">
+			{{ form_label(form.password, null, { "label_attr" : { "class": "control-label" }}) }}
+			<div class="controls">
+				{{ form_widget(form.password, { "attr" : { "class" : "form-control" }}) }}
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<input type="submit" value="Sign In" class="btn btn-primary" />
+			</div>
+		</div>
+	</form>
+
+{% endblock %}

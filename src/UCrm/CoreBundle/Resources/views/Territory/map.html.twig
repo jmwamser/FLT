@@ -1,0 +1,37 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block head -%}
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ googleApi.value }}&amp;sensor=true">
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/ucrmcore/js/maps.js') }}"></script>
+    <script type="text/javascript">
+    	$(function() {
+    		var territories = {{ coords|raw }},
+    			Map = new FLT.Map({
+                    sel: '#territory_map', 
+                    shapes: territories,
+                    mapCenter: function() {
+                        var coords = [];
+                        for (var key in territories) {
+                            var terr = territories[key];
+                            for (var i = 0; i < terr.length; i++) 
+                                coords.push(terr[i]);
+                        }
+
+                        
+                        var center = FLT.Utility.centerOf(coords);
+                        return new google.maps.LatLng(center.lb, center.mb);
+                    }
+                });
+    	});
+    </script>
+{% endblock %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Territory/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div id="territory_map"></div>
+{% endblock %}

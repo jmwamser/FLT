@@ -1,0 +1,45 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Client/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <h1>People</h1>
+
+    <table class="records_list table table-striped">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Status</th>
+                <th>Lastvisit</th>
+                <th>Streetnumber</th>
+                <th>Streetname</th>
+                <th>Neighborhood</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.firstName }}</td>
+                <td>{{ entity.lastName }}</td>
+                <td>{{ entity.status }}</td>
+                <td>{% if entity.lastVisit %}{{ entity.lastVisit|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.streetNumber }}</td>
+                <td>{{ entity.streetName }}</td>
+                <td>{{ entity.neighborhood }}</td>
+                <td>
+                
+                        <a href="{{ path('people_show', { 'id': entity.id }) }}" class="btn btn-primary">show</a>
+                    
+                        <a href="{{ path('people_edit', { 'id': entity.id }) }}" class="btn btn-danger">edit</a>
+                    
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

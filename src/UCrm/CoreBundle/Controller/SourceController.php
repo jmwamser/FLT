@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use UCrm\CoreBundle\Entity\Client;
-use UCrm\CoreBundle\Form\ClientType;
+use UCrm\CoreBundle\Entity\Source;
+use UCrm\CoreBundle\Form\SourceType;
 
 /**
- * Client controller.
+ * Source controller.
  *
- * @Route("/people")
+ * @Route("/sources")
  */
-class ClientController extends Controller implements AuthControllerInterface
+class SourceController extends Controller
 {
 
     /**
-     * Lists all Client entities.
+     * Lists all Source entities.
      *
-     * @Route("/", name="people")
+     * @Route("/", name="sources")
      * @Method("GET")
      * @Template()
      */
@@ -29,23 +29,23 @@ class ClientController extends Controller implements AuthControllerInterface
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('UCrmCoreBundle:Client')->findAll();
+        $entities = $em->getRepository('UCrmCoreBundle:Source')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Client entity.
+     * Creates a new Source entity.
      *
-     * @Route("/", name="people_create")
+     * @Route("/", name="sources_create")
      * @Method("POST")
-     * @Template("UCrmCoreBundle:Client:new.html.twig")
+     * @Template("UCrmCoreBundle:Source:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new Client();
-        $form = $this->createForm(new ClientType($this->getDoctrine()->getManager()), $entity);
+        $entity  = new Source();
+        $form = $this->createForm(new SourceType(), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -53,7 +53,7 @@ class ClientController extends Controller implements AuthControllerInterface
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('people_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('sources'));
         }
 
         return array(
@@ -63,16 +63,16 @@ class ClientController extends Controller implements AuthControllerInterface
     }
 
     /**
-     * Displays a form to create a new Client entity.
+     * Displays a form to create a new Source entity.
      *
-     * @Route("/new", name="people_new")
+     * @Route("/new", name="sources_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Client();
-        $form   = $this->createForm(new ClientType($this->getDoctrine()->getManager()), $entity);
+        $entity = new Source();
+        $form   = $this->createForm(new SourceType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -81,9 +81,9 @@ class ClientController extends Controller implements AuthControllerInterface
     }
 
     /**
-     * Finds and displays a Client entity.
+     * Finds and displays a Source entity.
      *
-     * @Route("/{id}", name="people_show")
+     * @Route("/{id}", name="sources_show")
      * @Method("GET")
      * @Template()
      */
@@ -91,10 +91,10 @@ class ClientController extends Controller implements AuthControllerInterface
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:Source')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Source entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -106,9 +106,9 @@ class ClientController extends Controller implements AuthControllerInterface
     }
 
     /**
-     * Displays a form to edit an existing Client entity.
+     * Displays a form to edit an existing Source entity.
      *
-     * @Route("/{id}/edit", name="people_edit")
+     * @Route("/{id}/edit", name="sources_edit")
      * @Method("GET")
      * @Template()
      */
@@ -116,48 +116,48 @@ class ClientController extends Controller implements AuthControllerInterface
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:Source')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Source entity.');
         }
 
-        $editForm = $this->createForm(new ClientType($em), $entity);
+        $editForm = $this->createForm(new SourceType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-     * Edits an existing Client entity.
+     * Edits an existing Source entity.
      *
-     * @Route("/{id}", name="people_update")
+     * @Route("/{id}", name="sources_update")
      * @Method("PUT")
-     * @Template("UCrmCoreBundle:Client:edit.html.twig")
+     * @Template("UCrmCoreBundle:Source:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:Source')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Client entity.');
+            throw $this->createNotFoundException('Unable to find Source entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new ClientType($em), $entity);
+        $editForm = $this->createForm(new SourceType(), $entity);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('people_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('sources'));
         }
 
         return array(
@@ -167,9 +167,9 @@ class ClientController extends Controller implements AuthControllerInterface
         );
     }
     /**
-     * Deletes a Client entity.
+     * Deletes a Source entity.
      *
-     * @Route("/{id}", name="people_delete")
+     * @Route("/{id}", name="sources_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -179,21 +179,21 @@ class ClientController extends Controller implements AuthControllerInterface
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+            $entity = $em->getRepository('UCrmCoreBundle:Source')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Client entity.');
+                throw $this->createNotFoundException('Unable to find Source entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('people'));
+        return $this->redirect($this->generateUrl('sources'));
     }
 
     /**
-     * Creates a form to delete a Client entity by id.
+     * Creates a form to delete a Source entity by id.
      *
      * @param mixed $id The entity id
      *

@@ -1,0 +1,32 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Source/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h1>Source list</h1>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('sources_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.name }}</td>
+                <td>
+                    <a href="{{ path('sources_edit', { 'id': entity.id }) }}" class="btn btn-warning">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

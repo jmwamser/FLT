@@ -8,10 +8,21 @@ use Doctrine\ORM\Mapping as ORM;
  * Territory
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\TerritoryRepository")
  */
 class Territory
 {
+
+    const StatusNone = 0;
+
+    const StatusCheckedOutNotRecorded = 1;
+
+    const StatusCheckedOutRecorded = 2;
+
+    const StatusUnworked = 3;
+
+    const StatusWorked = 4;
+
     /**
      * @var integer
      *
@@ -31,14 +42,44 @@ class Territory
     /**
      * @var string
      *
-     * @ORM\Column(name="map", type="string", length=255, nullable=true)
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
      */
-    private $map = null;
+    private $code = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="TerritoryHistory", mappedBy="territory")
+     * @var integer
+     * 
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
-    private $history;
+    private $status = null;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checked_out_on", type="datetime", nullable=true)
+     */
+    private $checkedOutOn = null;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checked_in_on", type="datetime", nullable=true)
+     */
+    private $checkedInOn = null;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="checked_out_to", type="integer", nullable=true)
+     */
+    private $checkedOutTo = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="territory")
+     * @ORM\JoinColumn(name="checked_out_to", referencedColumnName="id")
+     */
+    private $user;
+
 
 
     /**
@@ -114,69 +155,6 @@ class Territory
     
         return $this;
     }
-
-    /**
-     * Get checkoutOutBy
-     *
-     * @return integer 
-     */
-    public function getCheckoutOutBy()
-    {
-        return $this->checkoutOutBy;
-    }
-
-    /**
-     * Set checkoutOn
-     *
-     * @param \DateTime $checkoutOn
-     * @return Territory
-     */
-    public function setCheckoutOn($checkoutOn)
-    {
-        $this->checkoutOn = $checkoutOn;
-    
-        return $this;
-    }
-
-    /**
-     * Get checkoutOn
-     *
-     * @return \DateTime 
-     */
-    public function getCheckoutOn()
-    {
-        return $this->checkoutOn;
-    }
-
-    /**
-     * Set checkinOn
-     *
-     * @param \DateTime $checkinOn
-     * @return Territory
-     */
-    public function setCheckinOn($checkinOn)
-    {
-        $this->checkinOn = $checkinOn;
-    
-        return $this;
-    }
-
-    /**
-     * Get checkinOn
-     *
-     * @return \DateTime 
-     */
-    public function getCheckinOn()
-    {
-        return $this->checkinOn;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->history = new \Doctrine\Common\Collections\ArrayCollection();
-    }
     
     /**
      * Add history
@@ -209,5 +187,154 @@ class Territory
     public function getHistory()
     {
         return $this->history;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Territory
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set checkedOutOn
+     *
+     * @param \DateTime $checkedOutOn
+     * @return Territory
+     */
+    public function setCheckedOutOn($checkedOutOn)
+    {
+        $this->checkedOutOn = $checkedOutOn;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkedOutOn
+     *
+     * @return \DateTime 
+     */
+    public function getCheckedOutOn()
+    {
+        return $this->checkedOutOn;
+    }
+
+    public function hasCheckedOutOn()
+    {
+        return isset($this->checkedOutOn);
+    }
+
+    public function getCheckedOutOnFormatted()
+    {
+        return $this->hasCheckedOutOn() ?
+            $this->getCheckedOutOn()->format('m/d/Y') : "";
+    }
+
+    /**
+     * Set checkedInOn
+     *
+     * @param \DateTime $checkedInOn
+     * @return Territory
+     */
+    public function setCheckedInOn($checkedInOn)
+    {
+        $this->checkedInOn = $checkedInOn;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkedInOn
+     *
+     * @return \DateTime 
+     */
+    public function getCheckedInOn()
+    {
+        return $this->checkedInOn;
+    }
+
+    /**
+     * Set checkedOutTo
+     *
+     * @param integer $checkedOutTo
+     * @return Territory
+     */
+    public function setCheckedOutTo($checkedOutTo)
+    {
+        $this->checkedOutTo = $checkedOutTo;
+    
+        return $this;
+    }
+
+    /**
+     * Get checkedOutTo
+     *
+     * @return integer 
+     */
+    public function getCheckedOutTo()
+    {
+        return $this->checkedOutTo;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UCrm\CoreBundle\Entity\User $user
+     * @return Territory
+     */
+    public function setUser(\UCrm\CoreBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UCrm\CoreBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Territory
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 }

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TerritoryHistoryType extends AbstractType
+class TerritoryCheckoutType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,16 +15,11 @@ class TerritoryHistoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('territoryId', 'entity', [
-                    'class' => 'UCrmCoreBundle:Territory',
-                    'property' => 'id',
-                ])
-            ->add('checkedOutBy', 'entity', [
+            ->add('user', 'entity', [
                     'class' => 'UCrmCoreBundle:User',
-                    'property' => 'fullName',
-                ])
-            ->add('checkedOutOn')
-            ->add('checkedInOn');
+                    'property'  => 'fullName',
+                    'label'=> 'Check Out To'
+                ]);
     }
 
     /**
@@ -33,7 +28,7 @@ class TerritoryHistoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UCrm\CoreBundle\Entity\TerritoryHistory'
+            'data_class' => 'UCrm\CoreBundle\Entity\Territory'
         ));
     }
 
@@ -42,6 +37,6 @@ class TerritoryHistoryType extends AbstractType
      */
     public function getName()
     {
-        return 'ucrm_corebundle_territoryhistorytype';
+        return 'ucrm_corebundle_territorytype';
     }
 }

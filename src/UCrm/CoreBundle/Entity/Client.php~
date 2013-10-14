@@ -24,91 +24,91 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="first_name", type="string", length=255)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="last_name", type="string", length=255)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      */
     private $lastName;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
     private $userId;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="status", type="integer")
+     * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $statusId;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_visit", type="datetime")
+     * @ORM\Column(name="last_visit", type="datetime", nullable=true)
      */
     private $lastVisit;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="street_number", type="string", length=255)
+     * @ORM\Column(name="street_number", type="string", length=255, nullable=true)
      */
     private $streetNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="street_name", type="string", length=255)
+     * @ORM\Column(name="street_name", type="string", length=255, nullable=true)
      */
     private $streetName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="neighborhood", type="string", length=255)
+     * @ORM\Column(name="neighborhood", type="string", length=255, nullable=true)
      */
     private $neighborhood;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=255)
+     * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="zip", type="string", length=255)
+     * @ORM\Column(name="zip", type="string", length=255, nullable=true)
      */
     private $zip;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="territory", type="integer")
+     * @ORM\Column(name="territory_id", type="integer", nullable=true)
      */
-    private $territory;
+    private $territoryId;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="lat", type="decimal")
+     * @ORM\Column(name="lat", type="decimal", nullable=true)
      */
     private $lat;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="lon", type="decimal")
+     * @ORM\Column(name="lon", type="decimal", nullable=true)
      */
     private $lon;    
 
@@ -123,6 +123,18 @@ class Client
      * @ORM\JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Territory")
+     * @ORM\JoinColumn(name="territory_id", referencedColumnName="id")
+     */
+    private $territory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Source")
+     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
+     */
+    private $source;
 
 
 
@@ -456,5 +468,51 @@ class Client
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set statusId
+     *
+     * @param integer $statusId
+     * @return Client
+     */
+    public function setStatusId($statusId)
+    {
+        $this->statusId = $statusId;
+    
+        return $this;
+    }
+
+    /**
+     * Get statusId
+     *
+     * @return integer 
+     */
+    public function getStatusId()
+    {
+        return $this->statusId;
+    }
+
+    /**
+     * Set territoryId
+     *
+     * @param integer $territoryId
+     * @return Client
+     */
+    public function setTerritoryId($territoryId)
+    {
+        $this->territoryId = $territoryId;
+    
+        return $this;
+    }
+
+    /**
+     * Get territoryId
+     *
+     * @return integer 
+     */
+    public function getTerritoryId()
+    {
+        return $this->territoryId;
     }
 }

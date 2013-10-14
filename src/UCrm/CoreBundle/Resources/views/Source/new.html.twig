@@ -1,0 +1,16 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Source/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <h1>New Source</h1>
+
+    <form action="{{ path('sources_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </p>
+    </form>
+{% endblock %}

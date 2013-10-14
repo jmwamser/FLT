@@ -94,9 +94,9 @@ class Client
     /**
      * @var integer
      *
-     * @ORM\Column(name="territory", type="integer", nullable=true)
+     * @ORM\Column(name="territory_id", type="integer", nullable=true)
      */
-    private $territory;
+    private $territoryId;
 
     /**
      * @var integer
@@ -123,6 +123,18 @@ class Client
      * @ORM\JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Territory")
+     * @ORM\JoinColumn(name="territory_id", referencedColumnName="id")
+     */
+    private $territory;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Source")
+     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
+     */
+    private $source;
 
 
 
@@ -479,5 +491,51 @@ class Client
     public function getStatusId()
     {
         return $this->statusId;
+    }
+
+    /**
+     * Set territoryId
+     *
+     * @param integer $territoryId
+     * @return Client
+     */
+    public function setTerritoryId($territoryId)
+    {
+        $this->territoryId = $territoryId;
+    
+        return $this;
+    }
+
+    /**
+     * Get territoryId
+     *
+     * @return integer 
+     */
+    public function getTerritoryId()
+    {
+        return $this->territoryId;
+    }
+
+    /**
+     * Set source
+     *
+     * @param \UCrm\CoreBundle\Entity\Source $source
+     * @return Client
+     */
+    public function setSource(\UCrm\CoreBundle\Entity\Source $source = null)
+    {
+        $this->source = $source;
+    
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return \UCrm\CoreBundle\Entity\Source 
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 }

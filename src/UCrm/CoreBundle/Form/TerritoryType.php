@@ -15,8 +15,12 @@ class TerritoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('coords')
-            ->add('map');
+            ->add('code')
+            ->add('user', 'entity', [
+                    'class' => 'UCrmCoreBundle:User',
+                    'property'  => 'fullName',
+                    'label'=> 'Check Out To'
+                ]);
     }
 
     /**

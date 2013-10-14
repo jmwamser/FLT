@@ -1,0 +1,28 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Source/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="top-btns">
+        <form action="{{ path('sources_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+
+    <div class="page-header">
+        <h1>Edit Source</h1>
+    </div>
+
+    <form action="{{ path('sources_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        <input type="hidden" name="_method" value="PUT" />
+        {{ form_widget(edit_form) }}
+        <p>
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </p>
+    </form>
+
+{% endblock %}

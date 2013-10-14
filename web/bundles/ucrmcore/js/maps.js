@@ -3,9 +3,19 @@
 
 	var EditableMap = function(params) {
 		var me = this,
-			options = {};
+			options = $.extend({
+				editShape: null
+			}, params || {});
 		this.shapeCoords = [];
 		this.editable = false;
+
+		if (options.editShape) {
+			for (var i = 0; i < options.editShape.length; i++) {
+				this.shapeCoords.push(
+					new google.maps.LatLng(options.editShape[i].lb, options.editShape[i].mb)
+				);
+			}
+		}
 
 
 		this.getOptions = function() {
@@ -15,14 +25,15 @@
 		this.renderShape = function(editable) {
 			me.removeShape();
 
-			var options = {
-			    paths: me.shapeCoords,
-			    strokeColor: '#FF0000',
-			    strokeOpacity: 0.8,
-			    strokeWeight: 2,
-			    fillColor: '#FF0000',
-			    fillOpacity: 0.35
-			  };
+			var color = '#0000CC',
+				options = {
+				    paths: me.shapeCoords,
+				    strokeColor: color,
+				    strokeOpacity: 0.8,
+				    strokeWeight: 2,
+				    fillColor: color,
+				    fillOpacity: 0.35
+				  };
 
 			if (editable) {
 				options.editable = true;
@@ -161,6 +172,9 @@
 	  		me.getMap().controls[google.maps.ControlPosition.TOP_RIGHT].push(resetControlDiv);
 
 			google.maps.event.addListener(me.map.map, 'click', onMapClick);
+
+			if (me.shapeCoords.length > 0)
+				me.renderShape();
 		};
 
 		params.afterLoad = afterMapLoad;

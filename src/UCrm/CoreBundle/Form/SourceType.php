@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class NewTerritoryType extends AbstractType
+class SourceType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,7 +15,7 @@ class NewTerritoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code');
+            ->add('name');
     }
 
     /**
@@ -24,7 +24,7 @@ class NewTerritoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UCrm\CoreBundle\Entity\Territory'
+            'data_class' => 'UCrm\CoreBundle\Entity\Source'
         ));
     }
 
@@ -33,6 +33,6 @@ class NewTerritoryType extends AbstractType
      */
     public function getName()
     {
-        return 'ucrm_corebundle_territorytype';
+        return 'ucrm_corebundle_sourcetype';
     }
 }

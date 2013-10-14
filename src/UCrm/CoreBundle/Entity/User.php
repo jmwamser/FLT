@@ -77,9 +77,9 @@ class User
     private $calls;
 
     /**
-     * @ORM\OneToMany(targetEntity="TerritoryHistory", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Territory", mappedBy="user")
      */
-    private $territoryHistory;
+    private $territory;
 
     private $password;
 

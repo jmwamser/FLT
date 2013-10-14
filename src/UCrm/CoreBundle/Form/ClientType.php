@@ -26,7 +26,7 @@ class ClientType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
-            ->add('userId', 'choice', [
+            ->add('user', 'choice', [
                     'choices' => $this->allUsers(),
                     'label' => 'Called on by'
                 ])
@@ -34,12 +34,19 @@ class ClientType extends AbstractType
                     'class' => 'UCrmCoreBundle:Status'
                 ])
             ->add('lastVisit')
-            ->add('territory')
+            ->add('territory', 'entity', [
+                    'class' => 'UCrmCoreBundle:Territory',
+                    'property' => 'id'
+                ])
             ->add('streetNumber')
             ->add('streetName')
             ->add('neighborhood')
             ->add('city')
-            ->add('zip');
+            ->add('zip')
+            ->add('source', 'entity', [
+                    'class' => 'UCrmCoreBundle:Source',
+                    'property' => 'name'
+                ]);
     }
 
     private function allUsers() 

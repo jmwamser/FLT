@@ -11,6 +11,7 @@ use UCrm\CoreBundle\Entity\Territory;
 use UCrm\CoreBundle\Entity\Setting;
 use UCrm\CoreBundle\Form\TerritoryType;
 use UCrm\CoreBundle\Form\TerritoryCoordsType;
+use UCrm\CoreBundle\Form\TerritoryCheckoutType;
 use UCrm\CoreBundle\Form\NewTerritoryType;
 
 /**
@@ -32,10 +33,14 @@ class TerritoryController extends Controller implements AuthControllerInterface
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('UCrmCoreBundle:Territory')->findAll();
+        $entities = $em->getRepository('UCrmCoreBundle:Territory')->findAllWithUser();
+        $checkoutForm = $this->createForm(new TerritoryCheckoutType(), new Territory());
+        //var_dump($entities[0]->getUser());
+        //exit;
 
         return array(
             'entities' => $entities,
+            'checkout_form' => $checkoutForm->createView()
         );
     }
     /**
@@ -271,6 +276,46 @@ class TerritoryController extends Controller implements AuthControllerInterface
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Territory entity.
+     *
+     * @Route("/{id}/checkout", name="territory_checkout")
+     * @Method("PUT")
+     * @Template("UCrmCoreBundle:Territory:edit.html.twig")
+     */
+    public function checkoutAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('UCrmCoreBundle:Territory')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Territory entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createForm(new TerritoryType(), $entity);
+        $checkoutForm = $this->createForm(new TerritoryCheckoutType(), $entity);
+        $checkoutForm->submit($request);
+
+        if ($checkoutForm->isValid()) {
+            $entity->setStatus(Territory::StatusCheckedOutNotRecorded);
+            $entity->setCheckedOutOn(new \DateTime());
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('territories_edit', array('id' => $id)));
+        }
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'checkout_form' => $checkoutForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }

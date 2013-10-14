@@ -101,14 +101,14 @@ class Client
     /**
      * @var integer
      *
-     * @ORM\Column(name="lat", type="decimal", nullable=true)
+     * @ORM\Column(name="lat", type="decimal", precision=12, scale=9, nullable=true)
      */
     private $lat;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="lon", type="decimal", nullable=true)
+     * @ORM\Column(name="lon", type="decimal", precision=12, scale=9, nullable=true)
      */
     private $lon;    
 
@@ -146,6 +146,11 @@ class Client
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
     /**

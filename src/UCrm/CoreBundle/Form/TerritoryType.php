@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use UCrm\CoreBundle\Entity\Territory;
+
 class TerritoryType extends AbstractType
 {
     /**
@@ -20,6 +22,9 @@ class TerritoryType extends AbstractType
                     'class' => 'UCrmCoreBundle:User',
                     'property'  => 'fullName',
                     'label'=> 'Check Out To'
+                ])
+            ->add('status', 'choice', [
+                    'choices' => Territory::$statuses
                 ]);
     }
 

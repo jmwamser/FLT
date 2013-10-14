@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * |------------------------------------|
+ * | 128 | 56 | 28 | 16 | 8 | 4 | 2 | 1 |
+ * | SA  |    |  A |    |   |   |   | B |
+ * |------------------------------------|
+ */
 namespace UCrm\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +18,14 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User
 {
+
+    public static $perms = [
+        1   => 'Basic access',
+        28  => 'Admin',
+        128 => 'Super Admin'
+    ];
+
+
     /**
      * @var integer
      *
@@ -325,38 +338,5 @@ class User
     public function getCalls()
     {
         return $this->calls;
-    }
-
-    /**
-     * Add territoryHistory
-     *
-     * @param \UCrm\CoreBundle\Entity\TerritoryHistory $territoryHistory
-     * @return User
-     */
-    public function addTerritoryHistory(\UCrm\CoreBundle\Entity\TerritoryHistory $territoryHistory)
-    {
-        $this->territoryHistory[] = $territoryHistory;
-    
-        return $this;
-    }
-
-    /**
-     * Remove territoryHistory
-     *
-     * @param \UCrm\CoreBundle\Entity\TerritoryHistory $territoryHistory
-     */
-    public function removeTerritoryHistory(\UCrm\CoreBundle\Entity\TerritoryHistory $territoryHistory)
-    {
-        $this->territoryHistory->removeElement($territoryHistory);
-    }
-
-    /**
-     * Get territoryHistory
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getTerritoryHistory()
-    {
-        return $this->territoryHistory;
     }
 }

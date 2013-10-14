@@ -35,8 +35,6 @@ class TerritoryController extends Controller implements AuthControllerInterface
 
         $entities = $em->getRepository('UCrmCoreBundle:Territory')->findAllWithUser();
         $checkoutForm = $this->createForm(new TerritoryCheckoutType(), new Territory());
-        //var_dump($entities[0]->getUser());
-        //exit;
 
         return array(
             'entities' => $entities,

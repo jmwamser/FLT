@@ -208,6 +208,7 @@
 		}
 
 		this.el = $(options.sel);	
+		this.markers = [];
 
 		function handleNoGeoLocation(browserSupport) {
 			if (browserSupport) {
@@ -222,7 +223,7 @@
 		};
 
 		// Try W3C Geolocation (Preferred)
-		this.whereAmI = function(done, fail) {
+		/*this.whereAmI = function(done, fail) {
 			if(navigator.geolocation) {
 			    browserSupportFlag = true;
 			    navigator.geolocation.getCurrentPosition(function(position) {
@@ -238,7 +239,7 @@
 			    handleNoGeolocation(browserSupportFlag);
 			    fail();
 			}
-		};
+		};*/
 
 		this.addTerritories = function(territories) {
 			for (var key in territories) {
@@ -274,11 +275,29 @@
 			return me.map;
 		};
 
+		this.addMarker = function(def) {
+			var marker = new google.maps.Marker({
+				position: new google.maps.LatLng(def.lb, def.mb),
+				title: def.title,
+				map: me.getMap()
+			});
+
+			me.markers.push(marker);
+			return me;
+		};
+
 		function loadMap(opts) {
 			me.map = new google.maps.Map(document.getElementById(me.el.attr('id')), opts);
 
 			if (options.shapes && Object.keys(options.shapes).length > 0) {
 				me.addTerritories(options.shapes);
+			}
+
+			if (options.markers) {
+				for (var i = options.markers.length - 1; i >= 0; i--) {
+					var marker = options.markers[i];
+					me.addMarker(marker);
+				};
 			}
 
 			if (options.afterLoad)
@@ -289,7 +308,7 @@
 			mapOptions.center = options.mapCenter();
 			loadMap(mapOptions);
 		} else {
-			this.whereAmI(function(pos) {
+			whereAmI(function(pos) {
 				mapOptions.center = pos;
 				loadMap(mapOptions);
 			}, function() {
@@ -314,11 +333,30 @@
 		};
 	};
 
+	function whereAmI(done, fail) {
+		if(navigator.geolocation) {
+		    browserSupportFlag = true;
+		    navigator.geolocation.getCurrentPosition(function(position) {
+		      return done(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
+		    }, function() {
+		      handleNoGeolocation(browserSupportFlag);
+		      return fail();
+		    });
+		  }
+		  	// Browser doesn't support Geolocation
+		  	else {
+		    browserSupportFlag = false;
+		    handleNoGeolocation(browserSupportFlag);
+		    fail();
+		}
+	};
+
 	w.FLT = {
 		Map: Map,
 		EditableMap: EditableMap,
 		Utility: {
-			centerOf: centerOf
+			centerOf: centerOf,
+			whereAmI: whereAmI
 		}
 	};
 

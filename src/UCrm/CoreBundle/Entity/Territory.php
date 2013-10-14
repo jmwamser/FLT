@@ -23,6 +23,18 @@ class Territory
 
     const StatusWorked = 4;
 
+    const StatusCheckedIn = 5;
+
+
+    public static $statuses = [
+        '',
+        'Checked out, but not recorded',
+        'Checked out',
+        'Never worked',
+        'Worked',
+        'Checked in'
+    ];
+
     /**
      * @var integer
      *
@@ -154,39 +166,6 @@ class Territory
         $this->checkoutOutBy = $checkoutOutBy;
     
         return $this;
-    }
-    
-    /**
-     * Add history
-     *
-     * @param \UCrm\CoreBundle\Entity\TerritoryHistory $history
-     * @return Territory
-     */
-    public function addHistory(\UCrm\CoreBundle\Entity\TerritoryHistory $history)
-    {
-        $this->history[] = $history;
-    
-        return $this;
-    }
-
-    /**
-     * Remove history
-     *
-     * @param \UCrm\CoreBundle\Entity\TerritoryHistory $history
-     */
-    public function removeHistory(\UCrm\CoreBundle\Entity\TerritoryHistory $history)
-    {
-        $this->history->removeElement($history);
-    }
-
-    /**
-     * Get history
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getHistory()
-    {
-        return $this->history;
     }
 
     /**
@@ -336,5 +315,16 @@ class Territory
     public function getCode()
     {
         return $this->code;
+    }
+
+    public function howLongOut() 
+    {
+        $status = $this->getStatus();
+        if ($status != self::StatusCheckedOutRecorded &&
+            $status != self::StatusCheckedOutNotRecorded)
+            return "(Error)";
+
+        $interval = $this->getCheckedOutOn()->diff(new \DateTime());
+        return $interval ? $interval->format("%d") : "";
     }
 }

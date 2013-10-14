@@ -13,7 +13,7 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Checked Out On</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -21,8 +21,19 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('territories_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.getCheckedOutOnFormatted }} by 
-                    {% if entity.getUser() %}{{ entity.user.fullName }}{% endif %}</td>
+                <td>
+                    {% if entity.status == 1 or entity.status == 2 %}
+                        <span class="label label-primary">out {{ entity.howLongOut() }} days</span>
+                        {% if entity.status == 1 %}
+                            <span class="label label-danger">not recorded</span>
+                        {% endif %}
+
+                        {{ entity.getCheckedOutOnFormatted }}  
+                        {% if entity.user %}by {{ entity.user.fullName }}{% endif %}
+                    {% elseif entity.status == 3 %}
+                        <span class="label label-warning">never worked</span>
+                    {% endif %}
+                </td>
                 <td><a href="{{ path('territories_show', { 'id': entity.id }) }}" class="btn btn-default">show</a>
                     <a href="{{ path('territories_edit', { 'id': entity.id }) }}" class="btn btn-warning">edit</a>
                     <a href="#checkout-modal" data-checkout-url="{{ path('territory_checkout', { 'id': entity.id }) }}" class="btn btn-primary" data-toggle="modal" data-target="#checkoutModal">checkout</a>

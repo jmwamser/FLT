@@ -4,11 +4,34 @@
     {% include 'UCrmCoreBundle::Client/left-nav.html.twig' %}
 {% endblock %}
 
+{% block head -%}
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ googleApi.value }}&amp;sensor=true">
+</script>
+<script type="text/javascript" src="{{ asset('bundles/ucrmcore/js/maps.js') }}"></script>
+<script type="text/javascript">
+$(function() {
+    $('#geoTagHere').click(function() {
+        FLT.Utility.whereAmI(function(pos) {
+            $("#ucrm_corebundle_clienttype_lat").val(pos.lb);
+            $("#ucrm_corebundle_clienttype_lon").val(pos.mb);
+            alert('Successfully geotagged');
+        }, function() {
+            alert('We where unable to determine your position.');
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block body -%}
     <div class="top-btns">
         <a href="{{ path('people') }}" class="btn btn-default">
             Cancel
         </a>
+
+        <a href="{{ path('people_map', { 'id': entity.id }) }}" class="btn btn-default">Map</a>
+        <a href="javascript:void(0);" class="btn btn-primary" id="geoTagHere">Geo Tag</a>
     
         <form action="{{ path('people_delete', { 'id': entity.id }) }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
@@ -63,7 +86,7 @@
             </div>
         </div>
         <p>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </p>
     </form>
 {% endblock %}

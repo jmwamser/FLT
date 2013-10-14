@@ -11,6 +11,11 @@ use UCrm\CoreBundle\Entity\User;
 class AuthListener {
 
 	const DenyMessage = "You need to be signed in!";
+
+    const PermsMessage = "You need permission to do that!";
+
+    public static $user;
+
 	
 	public function onKernelController(FilterControllerEvent $event) {
 		$controller = $event->getController();
@@ -51,6 +56,12 @@ class AuthListener {
         	if (!$user || !$userHash || !$user->verifyHash($userHash)) {
         		throw new AccessDeniedHttpException(self::DenyMessage);
         	}
+
+            self::$user = $user;
+            /*var_dump($user->getPermissions() & $controller[0]->minPerms);
+            if (isset($controller[0]->minPerms) && ($user->getPermissions() & $controller[0]->minPerms) != $controller[0]->minPerms) {
+                throw new AccessDeniedHttpException(self::PermsMessage);   
+            }*/
         }
 	}
 

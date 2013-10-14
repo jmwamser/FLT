@@ -6,9 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use UCrm\CoreBundle\Entity\User;
-
-class UserType extends AbstractType
+class UserLimitedType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,12 +16,12 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('password', 'password', ['required' => false])
+            ->add('password', 'password')
             /*->add('passwordHash')
             ->add('passwordSalt')*/
             ->add('firstName')
-            ->add('lastName')
-            ->add('permissions');
+            ->add('lastName');
+            //->add('permissions');
     }
 
     /**

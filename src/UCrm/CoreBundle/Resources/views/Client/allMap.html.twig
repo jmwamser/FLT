@@ -1,0 +1,27 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block head -%}
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ googleApi.value }}&amp;sensor=true">
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/ucrmcore/js/maps.js') }}"></script>
+    <script type="text/javascript">
+    	$(function() {
+    		var Map = new FLT.Map({
+                    sel: '#territory_map', 
+                    markers: {{ markers|raw }}/*,
+                    mapCenter: function() {
+                        return new google.maps.LatLng({#{ entity.lat }}, {{ entity.lon }#});
+                    }*/
+                });
+    	});
+    </script>
+{% endblock %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Client/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div id="territory_map"></div>
+{% endblock %}

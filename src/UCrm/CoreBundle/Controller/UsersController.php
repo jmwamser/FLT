@@ -7,21 +7,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use UCrm\CoreBundle\Entity\TerritoryHistory;
-use UCrm\CoreBundle\Form\TerritoryHistoryType;
+use UCrm\CoreBundle\Entity\User;
+use UCrm\CoreBundle\Form\UserType;
 
 /**
- * TerritoryHistory controller.
+ * User controller.
  *
- * @Route("/territory_histories")
+ * @Route("/users")
  */
-class TerritoryHistoryController extends Controller
+class UsersController extends Controller implements AuthControllerInterface
 {
+    public $minPerms = 28;
 
     /**
-     * Lists all TerritoryHistory entities.
+     * Lists all User entities.
      *
-     * @Route("/", name="territory_histories")
+     * @Route("/", name="users")
      * @Method("GET")
      * @Template()
      */
@@ -29,23 +30,23 @@ class TerritoryHistoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('UCrmCoreBundle:TerritoryHistory')->findAll();
+        $entities = $em->getRepository('UCrmCoreBundle:User')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new TerritoryHistory entity.
+     * Creates a new User entity.
      *
-     * @Route("/", name="territory_histories_create")
+     * @Route("/", name="user_create")
      * @Method("POST")
-     * @Template("UCrmCoreBundle:TerritoryHistory:new.html.twig")
+     * @Template("UCrmCoreBundle:Users:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new TerritoryHistory();
-        $form = $this->createForm(new TerritoryHistoryType(), $entity);
+        $entity  = new User();
+        $form = $this->createForm(new UserType(), $entity);
         $form->submit($request);
 
         if ($form->isValid()) {
@@ -53,7 +54,7 @@ class TerritoryHistoryController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('territory_histories_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,16 +64,16 @@ class TerritoryHistoryController extends Controller
     }
 
     /**
-     * Displays a form to create a new TerritoryHistory entity.
+     * Displays a form to create a new User entity.
      *
-     * @Route("/new", name="territory_histories_new")
+     * @Route("/new", name="user_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new TerritoryHistory();
-        $form   = $this->createForm(new TerritoryHistoryType(), $entity);
+        $entity = new User();
+        $form   = $this->createForm(new UserType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -81,9 +82,9 @@ class TerritoryHistoryController extends Controller
     }
 
     /**
-     * Finds and displays a TerritoryHistory entity.
+     * Finds and displays a User entity.
      *
-     * @Route("/{id}", name="territory_histories_show")
+     * @Route("/{id}", name="user_show")
      * @Method("GET")
      * @Template()
      */
@@ -91,10 +92,10 @@ class TerritoryHistoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:TerritoryHistory')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TerritoryHistory entity.');
+            throw $this->createNotFoundException('Unable to find User entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -106,9 +107,9 @@ class TerritoryHistoryController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing TerritoryHistory entity.
+     * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="territory_histories_edit")
+     * @Route("/{id}/edit", name="user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -116,13 +117,13 @@ class TerritoryHistoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:TerritoryHistory')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TerritoryHistory entity.');
+            throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $editForm = $this->createForm(new TerritoryHistoryType(), $entity);
+        $editForm = $this->createForm(new UserType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -133,31 +134,31 @@ class TerritoryHistoryController extends Controller
     }
 
     /**
-     * Edits an existing TerritoryHistory entity.
+     * Edits an existing User entity.
      *
-     * @Route("/{id}", name="territory_histories_update")
+     * @Route("/{id}", name="user_update")
      * @Method("PUT")
-     * @Template("UCrmCoreBundle:TerritoryHistory:edit.html.twig")
+     * @Template("UCrmCoreBundle:Users:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('UCrmCoreBundle:TerritoryHistory')->find($id);
+        $entity = $em->getRepository('UCrmCoreBundle:User')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find TerritoryHistory entity.');
+            throw $this->createNotFoundException('Unable to find User entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new TerritoryHistoryType(), $entity);
+        $editForm = $this->createForm(new UserType(), $entity);
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('territory_histories_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
         }
 
         return array(
@@ -167,9 +168,9 @@ class TerritoryHistoryController extends Controller
         );
     }
     /**
-     * Deletes a TerritoryHistory entity.
+     * Deletes a User entity.
      *
-     * @Route("/{id}", name="territory_histories_delete")
+     * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -179,21 +180,21 @@ class TerritoryHistoryController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('UCrmCoreBundle:TerritoryHistory')->find($id);
+            $entity = $em->getRepository('UCrmCoreBundle:User')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find TerritoryHistory entity.');
+                throw $this->createNotFoundException('Unable to find User entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('territory_histories'));
+        return $this->redirect($this->generateUrl('user'));
     }
 
     /**
-     * Creates a form to delete a TerritoryHistory entity by id.
+     * Creates a form to delete a User entity by id.
      *
      * @param mixed $id The entity id
      *

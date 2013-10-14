@@ -36,6 +36,35 @@ class ClientController extends Controller implements AuthControllerInterface
         );
     }
     /**
+     * Lists all Client entities.
+     *
+     * @Route("/map", name="peoples_map")
+     * @Method("GET")
+     * @Template()
+     */
+    public function allMapAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('UCrmCoreBundle:Client')->findAll();
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
+
+        $markers = [];
+        foreach ($entities as $entity) {
+            $markers[] = [
+                'lb'    => $entity->getLat(),
+                'mb'    => $entity->getLon(),
+                'title' => $entity->getFullName()
+            ];
+        }
+
+        return array(
+            'entities' => $entities,
+            'googleApi'=> $googleSetting,
+            'markers'   => json_encode($markers)
+        );
+    }
+    /**
      * Creates a new Client entity.
      *
      * @Route("/", name="people_create")
@@ -73,10 +102,13 @@ class ClientController extends Controller implements AuthControllerInterface
     {
         $entity = new Client();
         $form   = $this->createForm(new ClientType($this->getDoctrine()->getManager()), $entity);
+        $em = $this->getDoctrine()->getManager();
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'googleApi' => $googleSetting
         );
     }
 
@@ -106,6 +138,31 @@ class ClientController extends Controller implements AuthControllerInterface
     }
 
     /**
+     * Finds and displays a map for Client entity.
+     *
+     * @Route("/{id}/map", name="people_map")
+     * @Method("GET")
+     * @Template()
+     */
+    public function mapAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Client entity.');
+        }
+
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
+
+        return array(
+            'entity'      => $entity,
+            'googleApi' => $googleSetting
+        );
+    }
+
+    /**
      * Displays a form to edit an existing Client entity.
      *
      * @Route("/{id}/edit", name="people_edit")
@@ -117,6 +174,7 @@ class ClientController extends Controller implements AuthControllerInterface
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('UCrmCoreBundle:Client')->find($id);
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Client entity.');
@@ -128,7 +186,8 @@ class ClientController extends Controller implements AuthControllerInterface
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
+            'googleApi' => $googleSetting
         );
     }
 
@@ -160,10 +219,13 @@ class ClientController extends Controller implements AuthControllerInterface
             return $this->redirect($this->generateUrl('people_edit', array('id' => $id)));
         }
 
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
+
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'googleApi' => $googleSetting
         );
     }
     /**

@@ -44,6 +44,31 @@ class ClientController extends Controller implements AuthControllerInterface
             'entities' => $entities,
         );
     }
+
+    /**
+     * Lists all stats.
+     *
+     * @Route("/stats", name="people_stats")
+     * @Method("GET")
+     * @Template()
+     */
+    public function statsAction(Request $request)
+    {
+        // Verify that user is a super admin
+        $auth = $this->get('core.auth.action_listener');
+        $user = $auth::$user;
+        if (($user->getPermissions() & 128) != 128) {
+            throw new AccessDeniedHttpException(AuthListener::PermsMessage);
+        }
+
+        $sFrom = $request->query->get('from');
+        $sRange = $request->query->get('range');
+
+        $endDate = (!empty($sFrom)) ? new \Date($sFrom) : new \Date();
+        $range= new \DateInterval(!empty($sRange) ? $sRange : 'P1M');
+
+        $startDate = $endDate->sub($range);
+    }
     /**
      * Lists all Client entities.
      *

@@ -24,4 +24,22 @@ class ClientRepository extends EntityRepository
 			->getQuery()->getResult();
 	}
 
+	public function findAllCreatedBetween($startDate, $endDate)
+	{
+		return $this->createQueryBuilder('c')
+			->where('c.created BETWEEN :startDate AND :endDate')
+			->setParameter('startDate', $startDate)
+			->setParameter('endDate', $endDate)
+			->getQuery()->getResult();
+	}
+
+	public function findAllUpdatedBetween($startDate, $endDate)
+	{
+		return $this->createQueryBuilder('c')
+			->where('c.updated BETWEEN :startDate AND :endDate')
+			->setParameter('startDate', $startDate)
+			->setParameter('endDate', $endDate)
+			->getQuery()->getResult();	
+	}
+
 }

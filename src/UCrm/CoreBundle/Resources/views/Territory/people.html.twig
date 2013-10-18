@@ -6,30 +6,34 @@
     </script>
     <script type="text/javascript" src="{{ asset('bundles/ucrmcore/js/maps.js') }}"></script>
     <script type="text/javascript">
-        $(function() {
-            var territory = {{ entity.coords|raw }},
+    	$(function() {
+    		var points = {{ points|raw }},
                 Map = new FLT.Map({
                     sel: '#territory_map', 
-                    shapes: [territory],
-                    mapCenter: function() {    
-                        var center = FLT.Utility.centerOf(territory);
+                    markers: points,
+                    mapCenter: function() {
+                        var center = FLT.Utility.centerOf(points);
                         return new google.maps.LatLng(center.lb, center.mb);
+                    },
+                    onMarkerClick: function(marker) {
+                        var info = marker.get('info');
+                        document.location.href = "/people/" + info.id + "/edit";
                     }
                 });
-        });
+            window.Map = Map;
+    	});
     </script>
 {% endblock %}
 
 {% block leftside -%}
     {% include 'UCrmCoreBundle::Territory/left-nav.html.twig' %}
+    <div class="panel panel-default">
+        <div class="list-group">
+            <a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list" class="list-group-item">List</a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block body -%}
-    <div class="top-btns">
-        
-    </div>
-    <div class="page-header">
-        <h1>Territory {{ entity.id }}</h1>
-    </div>
     <div id="territory_map"></div>
 {% endblock %}

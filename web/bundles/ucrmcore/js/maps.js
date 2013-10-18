@@ -275,6 +275,11 @@
 			return me.map;
 		};
 
+		this.onMarkerClick = function(marker) {
+			if (options.onMarkerClick)
+				options.onMarkerClick.call(me, marker);
+		};
+
 		this.addMarker = function(def) {
 			var marker = new google.maps.Marker({
 				position: new google.maps.LatLng(def.lb, def.mb),
@@ -282,7 +287,13 @@
 				map: me.getMap()
 			});
 
+			google.maps.event.addListener(marker, 'click', function() {
+				me.onMarkerClick(marker);
+			});
+
+			marker.set('info', def);
 			me.markers.push(marker);
+
 			return me;
 		};
 
@@ -323,8 +334,8 @@
 			sumOfLon = 0.0, 
 			total = coords.length;
 		for (var i = 0; i < total; i++) {
-			sumOfLat += coords[i].lb;
-			sumOfLon += coords[i].mb;
+			sumOfLat += parseFloat(coords[i].lb);
+			sumOfLon += parseFloat(coords[i].mb);
 		}
 
 		return {

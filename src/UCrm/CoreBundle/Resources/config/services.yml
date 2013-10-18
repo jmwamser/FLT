@@ -1,4 +1,10 @@
 services:
+  ucrm.twig.user_extension:
+    class: UCrm\CoreBundle\Twig\Extension\UserExtension
+    calls:
+      - [setAuth, ["@core.auth.action_listener"]]
+    tags:
+      - { name: twig.extension }
   ucrm.twig.controller_action_extension:
     class: UCrm\CoreBundle\Twig\Extension\ControllerActionExtension
     calls:

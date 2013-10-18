@@ -4,11 +4,13 @@ namespace UCrm\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use UCrm\CoreBundle\Entity\Client;
 use UCrm\CoreBundle\Form\ClientType;
+use UCrm\CoreBundle\EventListener\AuthListener;
 
 /**
  * Client controller.
@@ -27,6 +29,13 @@ class ClientController extends Controller implements AuthControllerInterface
      */
     public function indexAction()
     {
+        // Verify that user is a super admin
+        $auth = $this->get('core.auth.action_listener');
+        $user = $auth::$user;
+        if (($user->getPermissions() & 128) != 128) {
+            throw new AccessDeniedHttpException(AuthListener::PermsMessage);
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('UCrmCoreBundle:Client')->findAll();
@@ -34,6 +43,30 @@ class ClientController extends Controller implements AuthControllerInterface
         return array(
             'entities' => $entities,
         );
+    }
+    /**
+     * Lists all Client entities.
+     *
+     * @Route("/mine", name="people_mine")
+     * @Method("GET")
+     * @Template("UCrmCoreBundle:Client:index.html.twig")
+     */
+    public function myAction()
+    {
+        $auth = $this->get('core.auth.action_listener');
+        $user = $auth::$user;
+
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('UCrmCoreBundle:Client')->findAllOfUser($user);
+
+        return [
+            'entities' => $entities,
+            'user' => $user
+        ];
     }
     /**
      * Lists all Client entities.

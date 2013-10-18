@@ -58,10 +58,10 @@ class AuthListener {
         	}
 
             self::$user = $user;
-            /*var_dump($user->getPermissions() & $controller[0]->minPerms);
+            /*var_dump($user->getPermissions() & $controller[0]->minPerms);*/
             if (isset($controller[0]->minPerms) && ($user->getPermissions() & $controller[0]->minPerms) != $controller[0]->minPerms) {
                 throw new AccessDeniedHttpException(self::PermsMessage);   
-            }*/
+            }
         }
 	}
 

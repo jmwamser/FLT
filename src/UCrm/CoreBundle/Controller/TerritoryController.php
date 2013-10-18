@@ -131,12 +131,56 @@ class TerritoryController extends Controller implements AuthControllerInterface
             throw $this->createNotFoundException('Unable to find Territory entity.');
         }
 
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'googleApi' => $googleSetting
         );
+    }
+    /**
+     * Finds and displays a Territory entity.
+     *
+     * @Route("/{id}/people", name="territory_people")
+     * @Method("GET")
+     * @Template()
+     */
+    public function peopleAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('UCrmCoreBundle:Territory')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Territory entity.');
+        }
+
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
+        $people = $em->getRepository('UCrmCoreBundle:Client')->findAllInTerritory($entity);
+
+        $points = [];
+        foreach ($people as $person) {
+            $points[] = [
+                'id' => $person->getId(),
+                'lb' => $person->getLat(),
+                'mb' => $person->getLon(),
+                'title' => $person->getFullName()
+            ];
+        }
+
+        $vars = array(
+            'entity'      => $entity,
+            'googleApi' => $googleSetting,
+            'entities' => $people,
+            'points' => json_encode($points)
+        );
+
+        $type = $request->query->get('type');
+        return (isset($type) && $type == 'list') ?
+            $this->render('UCrmCoreBundle:Client:index.html.twig', $vars) :
+            $vars;
     }
 
     /**

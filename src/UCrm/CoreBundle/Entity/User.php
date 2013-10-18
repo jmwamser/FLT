@@ -1,7 +1,7 @@
 <?php
 /**
  * |------------------------------------|
- * | 128 | 56 | 28 | 16 | 8 | 4 | 2 | 1 |
+ * | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
  * | SA  |    |  A |    |   |   |   | B |
  * |------------------------------------|
  */
@@ -21,7 +21,7 @@ class User
 
     public static $perms = [
         1   => 'Basic access',
-        28  => 'Admin',
+        32  => 'Admin',
         128 => 'Super Admin'
     ];
 
@@ -338,5 +338,10 @@ class User
     public function getCalls()
     {
         return $this->calls;
+    }
+
+    public function hasPermissionFor($perm) 
+    {
+        return ($this->getPermissions() & $perm) === $perm;
     }
 }

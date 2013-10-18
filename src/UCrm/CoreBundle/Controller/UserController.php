@@ -12,7 +12,6 @@ use UCrm\CoreBundle\Form\UserLimitedType;
 /**
  * User controller.
  *
- * @Route("/me")
  */
 class UserController extends Controller implements AuthControllerInterface
 {
@@ -20,7 +19,7 @@ class UserController extends Controller implements AuthControllerInterface
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/", name="me_edit")
+     * @Route("/me", name="me_edit")
      * @Method("GET")
      * @Template()
      */
@@ -44,7 +43,7 @@ class UserController extends Controller implements AuthControllerInterface
     /**
      * Edits an existing User entity.
      *
-     * @Route("/", name="me_update")
+     * @Route("/me", name="me_update")
      * @Method("PUT")
      * @Template("UCrmCoreBundle:User:edit.html.twig")
      */

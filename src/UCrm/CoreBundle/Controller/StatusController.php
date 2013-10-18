@@ -17,6 +17,8 @@ use UCrm\CoreBundle\Form\StatusType;
  */
 class StatusController extends Controller implements AuthControllerInterface
 {
+    
+    public $minPerms = 128;
 
     /**
      * Lists all Status entities.

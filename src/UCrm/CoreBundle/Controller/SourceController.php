@@ -15,8 +15,11 @@ use UCrm\CoreBundle\Form\SourceType;
  *
  * @Route("/sources")
  */
-class SourceController extends Controller
+class SourceController extends Controller implements AuthControllerInterface
 {
+
+    public $minPerms = 128;
+
 
     /**
      * Lists all Source entities.

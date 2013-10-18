@@ -27,6 +27,10 @@ twig:
     form:
         resources: 
             - 'UCrmCoreBundle:form:fields.html.twig'
+    globals:
+        PermsSuperAdmin: 128
+        PermsAdmin: 32
+        PermsBasic: 1
 
 # Assetic Configuration
 assetic:

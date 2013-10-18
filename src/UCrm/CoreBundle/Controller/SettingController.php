@@ -18,6 +18,9 @@ use UCrm\CoreBundle\Form\SettingType;
 class SettingController extends Controller implements AuthControllerInterface
 {
 
+    public $minPerms = 128;
+
+
     /**
      * Lists all Setting entities.
      *

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository")
  */
 class Client
 {
@@ -135,6 +136,18 @@ class Client
      * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
      */
     private $source;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updated;
 
 
 

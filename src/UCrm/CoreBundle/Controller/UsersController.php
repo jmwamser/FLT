@@ -17,7 +17,7 @@ use UCrm\CoreBundle\Form\UserType;
  */
 class UsersController extends Controller implements AuthControllerInterface
 {
-    public $minPerms = 28;
+    public $minPerms = 128;
 
     /**
      * Lists all User entities.

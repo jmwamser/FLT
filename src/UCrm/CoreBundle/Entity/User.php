@@ -67,7 +67,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="last_name", type="string", length=255)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      */
     private $lastName;
 
@@ -81,9 +81,9 @@ class User
     /**
      * @var \DateTime
      * 
-     * @ORM\Column(name="last_login_at", type="datetime")
+     * @ORM\Column(name="last_login_at", type="datetime", nullable=true)
      */
-    private $lastLoginAt;
+    private $lastLoginAt = null;
 
     /**
      * @ORM\OneToMany(targetEntity="Client", mappedBy="user")

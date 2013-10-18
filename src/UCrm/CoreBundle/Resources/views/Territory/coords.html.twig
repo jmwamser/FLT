@@ -11,7 +11,9 @@
                 Map = new FLT.EditableMap({
                     sel:"#territory_map", 
                     shapes: territories,
+                    {% if entity.coords is not null %}
                     editShape: {{ entity.coords|raw }}
+                    {% endif %}
                 });
     		window.Map = Map;
 

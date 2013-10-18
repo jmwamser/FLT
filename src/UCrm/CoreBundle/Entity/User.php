@@ -149,6 +149,12 @@ class User
         return $this->password;
     }
 
+    public function generatePassword()
+    {
+        $password = md5(md5(time() . '|' . $this->getPasswordSalt()));
+        return substr($password, 0, 8);
+    }
+
     public function crypto($raw) 
     {
         return crypt($raw, "$1$" . $this->getPasswordSalt() . "$");

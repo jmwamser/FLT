@@ -51,8 +51,25 @@ class UsersController extends Controller implements AuthControllerInterface
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $password = $entity->getPassword();
+            if (empty($password))
+                $entity->setPassword($entity->generatePassword());
             $em->persist($entity);
             $em->flush();
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Welcome to FLT')
+                ->setFrom('donotreply@' . $_SERVER['HTTP_HOST'])
+                ->setTo($entity->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'UCrmCoreBundle:UsersMailer:welcome.txt.twig',
+                        array('entity' => $entity)
+                    )
+                )
+            ;
+            $this->get('mailer')->send($message);
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));
         }

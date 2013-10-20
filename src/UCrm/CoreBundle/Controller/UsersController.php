@@ -66,7 +66,10 @@ class UsersController extends Controller implements AuthControllerInterface
                 ->setBody(
                     $this->renderView(
                         'UCrmCoreBundle:UsersMailer:welcome.txt.twig',
-                        array('entity' => $entity)
+                        array(
+                            'entity' => $entity,
+                            'http_host' => $_SERVER['HTTP_HOST']
+                        )
                     )
                 )
             ;
@@ -208,7 +211,7 @@ class UsersController extends Controller implements AuthControllerInterface
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('users'));
     }
 
     /**

@@ -24,7 +24,8 @@ class TerritoryCoordsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UCrm\CoreBundle\Entity\Territory'
+            'data_class' => 'UCrm\CoreBundle\Entity\Territory',
+            //'csrf_protection'   => false,
         ));
     }
 

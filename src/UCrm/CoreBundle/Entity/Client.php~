@@ -3,12 +3,14 @@
 namespace UCrm\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Client
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository")
  */
 class Client
 {
@@ -101,16 +103,23 @@ class Client
     /**
      * @var integer
      *
-     * @ORM\Column(name="lat", type="decimal", nullable=true)
+     * @ORM\Column(name="lat", type="decimal", precision=12, scale=9, nullable=true)
      */
     private $lat;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="lon", type="decimal", nullable=true)
+     * @ORM\Column(name="lon", type="decimal", precision=12, scale=9, nullable=true)
      */
-    private $lon;    
+    private $lon;   
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description; 
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="calls")
@@ -136,6 +145,18 @@ class Client
      */
     private $source;
 
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
+
+    /**
+     * @ORM\Column(name="updated", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updated;
+
 
 
     /**
@@ -146,6 +167,11 @@ class Client
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
     /**
@@ -514,5 +540,28 @@ class Client
     public function getTerritoryId()
     {
         return $this->territoryId;
+    }
+
+    /**
+     * Set source
+     *
+     * @param \UCrm\CoreBundle\Entity\Source $source
+     * @return Client
+     */
+    public function setSource(\UCrm\CoreBundle\Entity\Source $source = null)
+    {
+        $this->source = $source;
+    
+        return $this;
+    }
+
+    /**
+     * Get source
+     *
+     * @return \UCrm\CoreBundle\Entity\Source 
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 }

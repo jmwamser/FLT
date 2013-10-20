@@ -112,7 +112,14 @@ class Client
      *
      * @ORM\Column(name="lon", type="decimal", precision=12, scale=9, nullable=true)
      */
-    private $lon;    
+    private $lon;   
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description; 
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="calls")
@@ -556,5 +563,74 @@ class Client
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Client
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Client
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Client
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

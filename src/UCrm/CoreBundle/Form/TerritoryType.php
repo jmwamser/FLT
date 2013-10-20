@@ -18,11 +18,6 @@ class TerritoryType extends AbstractType
     {
         $builder
             ->add('code')
-            ->add('user', 'entity', [
-                    'class' => 'UCrmCoreBundle:User',
-                    'property'  => 'fullName',
-                    'label'=> 'Check Out To'
-                ])
             ->add('status', 'choice', [
                     'choices' => Territory::$statuses
                 ]);

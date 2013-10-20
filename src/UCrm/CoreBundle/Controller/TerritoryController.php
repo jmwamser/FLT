@@ -87,7 +87,7 @@ class TerritoryController extends Controller implements AuthControllerInterface
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('territories_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('territories_edit', array('id' => $entity->getId())));
         }
 
         return array(
@@ -259,7 +259,7 @@ class TerritoryController extends Controller implements AuthControllerInterface
      * @Method("PUT")
      * @Template("UCrmCoreBundle:Territory:coords.html.twig")
      */
-    public function coordsUpdateAction($id)
+    public function coordsUpdateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -280,10 +280,23 @@ class TerritoryController extends Controller implements AuthControllerInterface
             return $this->redirect($this->generateUrl('territories_edit', array('id' => $id)));
         }
 
+        $db = $em->getRepository('UCrmCoreBundle:Territory')->createQueryBuilder('t');
+        $db->where('t.id != :id')
+            ->setParameter('id', $id);
+        $terrs = $db->getQuery()->getResult();
+        $coords = [];
+        foreach ($terrs as $terr) {
+            if (!$terr->hasCoords()) {
+                continue;
+            }
+            $coords[$terr->getId()] = json_decode($terr->getCoords());
+        }
+
         return array(
-            'edit_form' => $editForm,
+            'edit_form' => $editForm->createView(),
             'entity'    => $entity,
-            'googleApi' => $googleSetting
+            'googleApi' => $googleSetting,
+            'coords' => $coords
         );
     } 
 

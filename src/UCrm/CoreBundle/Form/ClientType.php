@@ -47,6 +47,7 @@ class ClientType extends AbstractType
                     'class' => 'UCrmCoreBundle:Source',
                     'property' => 'name'
                 ])
+            ->add('description')
             ->add('lat', 'hidden')
             ->add('lon', 'hidden');
     }

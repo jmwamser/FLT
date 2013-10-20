@@ -22,9 +22,12 @@
     </div>
 
     <div class="page-header">
-        <h1>Edit Territory</h1>
+        <h1>Edit Territory
+            {% if entity.status == 1 or entity.status == 2 %}
+                <span class="label label-{% if entity.status == 1 %}danger{% else %}info{% endif %}">Checked Out to {{ entity.user.getFullName() }}</span>
+            {% endif %}
+        </h1>
     </div>
-
     {#<div id="territory-map-cont">
         <div id="territory_map"></div>
     </div>#}

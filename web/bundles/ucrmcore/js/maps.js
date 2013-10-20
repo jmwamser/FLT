@@ -11,6 +11,10 @@
 
 		if (options.editShape) {
 			for (var i = 0; i < options.editShape.length; i++) {
+				if (!options.editShape[i] || !options.editShape[i].lb || !options.editShape[i].mb) {
+					continue;
+				}
+				
 				this.shapeCoords.push(
 					new google.maps.LatLng(options.editShape[i].lb, options.editShape[i].mb)
 				);

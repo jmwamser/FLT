@@ -56,7 +56,7 @@ class SessionsController extends Controller
         $session->set('user_id', $user->getId()); 
         $session->set('user_hash', $user->getHash());   
 
-        return $this->redirect($this->generateUrl('users'));
+        return $this->redirect($this->generateUrl('me_edit'));
     }
 
     /**

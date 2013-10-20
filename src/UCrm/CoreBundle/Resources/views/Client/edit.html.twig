@@ -80,6 +80,20 @@ $(function() {
                     </div>
                 </fieldset>
                 <fieldset class="row">
+                    <legend>Coordinates</legend>
+                    <div class="col-md-4">
+                        {{ form_row(edit_form.lat) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(edit_form.lon) }}
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#mapModal" class="btn btn-primary" data-toggle="modal" data-target="#mapModal">
+                            Open Map
+                        </a>
+                    </div>
+                </fieldset>
+                <fieldset class="row">
                     {{ form_row(edit_form.description) }}
                 </fieldset>
             </div>
@@ -93,4 +107,6 @@ $(function() {
             <button type="submit" class="btn btn-primary">Save</button>
         </p>
     </form>
+
+    {% include 'UCrmCoreBundle:Client:map-modal.html.twig' %}
 {% endblock %}

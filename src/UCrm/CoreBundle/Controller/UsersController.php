@@ -55,6 +55,7 @@ class UsersController extends Controller implements AuthControllerInterface
             $password = $entity->getPassword();
             if (empty($password))
                 $entity->setPassword($entity->generatePassword());
+            
             $em->persist($entity);
             $em->flush();
 

@@ -1,0 +1,54 @@
+<script type="text/javascript">
+$(function() {
+	var Map,
+		mapModal = $('#mapModal');
+	mapModal.modal({
+		show: false
+	});
+	mapModal.on('shown.bs.modal', function() {
+		//$('form', mapModal).attr('action', '');
+		Map = new FLT.Map({
+	    	sel: '#clientMap', 
+	    	pinnable: true,
+	    	{% if entity.lat is not null and entity.lon is not null %}
+	    	markers: [{
+	    		lb: {{ entity.lat }},
+	    		mb: {{ entity.lon }},
+	    		edit: true
+	    	}]
+	    	{% endif %}
+	    });
+	});
+	mapModal.on('hide.bs.modal', function() {
+		var markers = Map.getMarkers();
+
+		if (markers.length < 1) {
+			return;
+		}
+
+		var marker = markers[0],
+			latLng = marker.getPosition();
+
+		$("#ucrm_corebundle_clienttype_lat").val(latLng.lb);
+		$("#ucrm_corebundle_clienttype_lon").val(latLng.mb);
+	});
+	$('[data-target="#mapModal"]').click(function() {
+		//$('form', mapModal).attr('action', $(this).data('checkout-url'));
+	});
+});
+</script>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="mapModal">
+    <div class="modal-dialog">
+    	<div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Place Pin</h4>
+        </div>
+	    <div class="modal-content">
+	       	<div id="clientMap"></div>
+	    </div><!-- /.modal-content -->
+	    <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+        </div>
+    </div><!-- /.modal-dialog -->
+</div>

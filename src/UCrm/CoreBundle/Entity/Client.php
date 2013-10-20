@@ -3,14 +3,13 @@
 namespace UCrm\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Client
  *
  * @ORM\Table()
- * @ORM\Entity
- * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository")
+ * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository") 
+ * 
  */
 class Client
 {
@@ -50,13 +49,6 @@ class Client
      * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $statusId;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_visit", type="datetime", nullable=true)
-     */
-    private $lastVisit;
 
     /**
      * @var string
@@ -146,14 +138,12 @@ class Client
     private $source;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
      * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
 
@@ -333,29 +323,6 @@ class Client
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set lastVisit
-     *
-     * @param \DateTime $lastVisit
-     * @return Client
-     */
-    public function setLastVisit($lastVisit)
-    {
-        $this->lastVisit = $lastVisit;
-    
-        return $this;
-    }
-
-    /**
-     * Get lastVisit
-     *
-     * @return \DateTime 
-     */
-    public function getLastVisit()
-    {
-        return $this->lastVisit;
     }
 
     /**
@@ -632,5 +599,14 @@ class Client
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * 
+     */
+    public function addCreatedTimestamp()
+    {
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
     }
 }

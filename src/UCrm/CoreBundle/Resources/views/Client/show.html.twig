@@ -5,6 +5,20 @@
 {% endblock %}
 
 {% block body -%}
+    <div class="top-btns">
+        <a href="{{ path('people') }}" class="btn btn-default">
+            Back to the list
+        </a>
+        <a href="{{ path('people_edit', { 'id': entity.id }) }}" class="btn btn-primary">
+            Edit
+        </a>
+        <form action="{{ path('people_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
+
     <div class="page-header">
         <h1>Person</h1>
     </div>
@@ -32,10 +46,6 @@
                 <td>{{ entity.status }}</td>
             </tr>
             <tr>
-                <th>Lastvisit</th>
-                <td>{{ entity.lastVisit|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
                 <th>Streetnumber</th>
                 <td>{{ entity.streetNumber }}</td>
             </tr>
@@ -57,24 +67,4 @@
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('people') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('people_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('people_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
 {% endblock %}

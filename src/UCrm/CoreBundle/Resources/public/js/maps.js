@@ -201,6 +201,7 @@
 				center: null,
 				afterLoad: null,
 				mapCenter: null,
+				pinnable: false
 			}, params || {}),
 			mapOptions = {
 			    zoom: 12,
@@ -301,8 +302,31 @@
 			return me;
 		};
 
+		this.dropMarker = function(def) {
+			var marker = new google.maps.Marker(def);
+			me.markers.push(marker);
+		};
+
+		this.getMarkers = function() {
+			return me.markers;
+		};
+
+		function onMapClick(evt) {
+			if (me.markers.length == 0) {
+				me.dropMarker({
+					position: evt.latLng,
+					draggable: true,
+					map: me.getMap()
+				});
+			}
+		};
+
 		function loadMap(opts) {
 			me.map = new google.maps.Map(document.getElementById(me.el.attr('id')), opts);
+
+			if (options.pinnable) {
+				google.maps.event.addListener(me.map, 'click', onMapClick);
+			}
 
 			if (options.shapes && Object.keys(options.shapes).length > 0) {
 				me.addTerritories(options.shapes);

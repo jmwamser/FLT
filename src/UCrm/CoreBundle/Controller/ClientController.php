@@ -137,6 +137,9 @@ class ClientController extends Controller implements AuthControllerInterface
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $entity->setCreated(new \DateTime());
+            $entity->setUpdated(new \DateTime());
             $em->persist($entity);
             $em->flush();
 
@@ -271,6 +274,7 @@ class ClientController extends Controller implements AuthControllerInterface
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
+            $entity->setUpdated(new \DateTime());
             $em->persist($entity);
             $em->flush();
 

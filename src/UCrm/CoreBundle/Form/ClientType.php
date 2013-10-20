@@ -5,6 +5,7 @@ namespace UCrm\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class ClientType extends AbstractType
 {
@@ -33,10 +34,13 @@ class ClientType extends AbstractType
             ->add('status', 'entity', [
                     'class' => 'UCrmCoreBundle:Status'
                 ])
-            ->add('lastVisit')
             ->add('territory', 'entity', [
                     'class' => 'UCrmCoreBundle:Territory',
-                    'property' => 'id'
+                    'property' => 'code',
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('t')
+                            ->orderBy('t.code', 'ASC');
+                    },
                 ])
             ->add('streetNumber')
             ->add('streetName')
@@ -48,8 +52,8 @@ class ClientType extends AbstractType
                     'property' => 'name'
                 ])
             ->add('description')
-            ->add('lat', 'hidden')
-            ->add('lon', 'hidden');
+            ->add('lat')
+            ->add('lon');
     }
 
     private function allUsers() 

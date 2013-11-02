@@ -80,7 +80,7 @@ class Territory
     private $checkedInOn = null;
 
     /**
-     * @var \DateTime
+     * @var integer
      *
      * @ORM\Column(name="checked_out_to", type="integer", nullable=true)
      */

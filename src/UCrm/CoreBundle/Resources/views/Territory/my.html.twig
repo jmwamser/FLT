@@ -1,0 +1,31 @@
+{% extends 'UCrmCoreBundle::layouts/main.html.twig' %}
+
+{% block leftside -%}
+    {% include 'UCrmCoreBundle::Territory/left-nav.html.twig' %}
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h1>Territory list</h1>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list">{{ entity.code }}</a></td>
+                <td>
+                    <a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list" class="btn btn-default">show</a>
+                    <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="list-group-item">print</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

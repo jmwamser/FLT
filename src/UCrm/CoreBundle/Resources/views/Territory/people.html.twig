@@ -30,10 +30,14 @@
     <div class="panel panel-default">
         <div class="list-group">
             <a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list" class="list-group-item">List</a>
+            <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="list-group-item">Print</a>
         </div>
     </div>
 {% endblock %}
 
 {% block body -%}
+    <div class="top-btns">
+        <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="list-group-item">Print</a>
+    </div>
     <div id="territory_map"></div>
 {% endblock %}

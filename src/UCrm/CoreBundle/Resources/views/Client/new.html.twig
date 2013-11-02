@@ -4,6 +4,26 @@
     {% include 'UCrmCoreBundle::Client/left-nav.html.twig' %}
 {% endblock %}
 
+{% block head -%}
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key={{ googleApi.value }}&amp;sensor=true">
+</script>
+<script type="text/javascript" src="{{ asset('bundles/ucrmcore/js/maps.js') }}"></script>
+<script type="text/javascript">
+$(function() {
+    $('#geoTagHere').click(function() {
+        FLT.Utility.whereAmI(function(pos) {
+            $("#ucrm_corebundle_clienttype_lat").val(pos.lb);
+            $("#ucrm_corebundle_clienttype_lon").val(pos.mb);
+            alert('Successfully geotagged');
+        }, function() {
+            alert('We where unable to determine your position.');
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block body -%}
 	<div class="page-header">
     	<h1>Add Person</h1>
@@ -45,6 +65,26 @@
                     </div>
         		</fieldset>
                 <fieldset class="row">
+                    <legend>Phone</legend>
+                    <div class="col-md-6">
+                        {{ form_row(form.phoneNumber) }}
+                    </div>
+                </fieldset>
+                <fieldset class="row">
+                    <legend>Coordinates</legend>
+                    <div class="col-md-4">
+                        {{ form_row(form.lat) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_row(form.lon) }}
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#mapModal" class="btn btn-primary" data-toggle="modal" data-target="#mapModal">
+                            Open Map
+                        </a>
+                    </div>
+                </fieldset>
+                <fieldset class="row">
                     {{ form_row(form.description) }}
                 </fieldset>
         	</div>
@@ -60,4 +100,6 @@
 	        </p>
 	    </div>
     </form>
+
+    {% include 'UCrmCoreBundle:Client:map-modal.html.twig' %}
 {% endblock %}

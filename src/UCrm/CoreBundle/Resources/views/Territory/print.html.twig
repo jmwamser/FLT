@@ -1,0 +1,44 @@
+{% extends 'UCrmCoreBundle::layouts/print.html.twig' %}
+
+{% block head %}
+	<style type="text/css">
+		table {
+			width: 100%;
+		}
+		.person {
+			margin-bottom: 15px;
+			padding-bottom: 15px;
+			border-bottom: 1px solid black;
+		}
+		.source { text-align: right; }
+	</style>
+{% endblock %}
+
+{% block body -%}
+    <div class="page-header">
+        <h1>Territory {{ entity.code }}</h1>
+    </div>
+
+    {% for person in people %}
+    	<div class="person">
+		    <table class="table table-striped">
+		    	<tr>
+		    		<td><span>Name:</span> 
+		    			{{ person.fullName }} 
+		    			{% if person.gender is not null %}({{ person.genderFormatted }}){% endif %}
+		    		</td>
+		    		<td class="source"><span>Found By:</span> {{ person.source.name }}</td>
+		    	</tr>
+		    	<tr>
+		    		<td colspan="2"><span>Address:</span> {{ person.streetNumber }} {{ person.streetName }}, {{ person.neighborhood }}</td>
+		    	</tr>
+		    	<tr>
+		    		<td colspan="2"><span>Phone Number:</span> {{ person.phoneNumber }}</td>
+		    	</tr>
+		    	<tr>
+		    		<td colspan="2"><span>Notes:</span> {{ person.description }}</td>
+		    	</tr>
+		    </table>
+		</div>
+    {% endfor %}
+{% endblock %}

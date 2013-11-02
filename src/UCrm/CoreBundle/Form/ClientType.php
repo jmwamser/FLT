@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use UCrm\CoreBundle\Entity\Client;
 
 class ClientType extends AbstractType
 {
@@ -27,6 +28,10 @@ class ClientType extends AbstractType
         $builder
             ->add('firstName')
             ->add('lastName')
+            ->add('gender', 'choice', [
+                    'choices' => Client::$genderOpts,
+                    'label' => 'Gender'
+                ])
             ->add('userId', 'choice', [
                     'choices' => $this->allUsers(),
                     'label' => 'Called on by'
@@ -53,7 +58,8 @@ class ClientType extends AbstractType
                 ])
             ->add('description')
             ->add('lat')
-            ->add('lon');
+            ->add('lon')
+            ->add('phoneNumber');
     }
 
     private function allUsers() 

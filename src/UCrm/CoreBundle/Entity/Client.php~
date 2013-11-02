@@ -3,17 +3,19 @@
 namespace UCrm\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Client
  *
  * @ORM\Table()
- * @ORM\Entity
- * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository")
+ * @ORM\Entity(repositoryClass="UCrm\CoreBundle\Entity\ClientRepository") 
+ * 
  */
 class Client
 {
+
+    public static $genderOpts = ['Male', 'Female'];
+
     /**
      * @var integer
      *
@@ -39,6 +41,13 @@ class Client
 
     /**
      * @var integer
+     * 
+     * @ORM\Column(name="gender", type="integer")
+     */
+    private $gender;
+
+    /**
+     * @var integer
      *
      * @ORM\Column(name="user_id", type="integer", nullable=true)
      */
@@ -50,13 +59,6 @@ class Client
      * @ORM\Column(name="status", type="integer", nullable=true)
      */
     private $statusId;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_visit", type="datetime", nullable=true)
-     */
-    private $lastVisit;
 
     /**
      * @var string
@@ -146,16 +148,21 @@ class Client
     private $source;
 
     /**
-     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
 
     /**
      * @ORM\Column(name="updated", type="datetime")
-     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="phone_number", type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
 
 
 
@@ -333,29 +340,6 @@ class Client
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set lastVisit
-     *
-     * @param \DateTime $lastVisit
-     * @return Client
-     */
-    public function setLastVisit($lastVisit)
-    {
-        $this->lastVisit = $lastVisit;
-    
-        return $this;
-    }
-
-    /**
-     * Get lastVisit
-     *
-     * @return \DateTime 
-     */
-    public function getLastVisit()
-    {
-        return $this->lastVisit;
     }
 
     /**
@@ -563,5 +547,106 @@ class Client
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Client
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Client
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Client
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+    
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * 
+     */
+    public function addCreatedTimestamp()
+    {
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * Set gender
+     *
+     * @param integer $gender
+     * @return Client
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return integer 
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 }

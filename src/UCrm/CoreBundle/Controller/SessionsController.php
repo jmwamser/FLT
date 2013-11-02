@@ -32,22 +32,28 @@ class SessionsController extends Controller
     /**
      * @Route("/signin", name="signin")
      * @Method({"POST"})
+     * @Template("UCrmCoreBundle:Sessions:new.html.twig")
   	 */
     public function signinAction(Request $request)
     {
-        $form = $this->createForm(new SigninType(), new User());
+        $entity = new User();
+        $form = $this->createForm(new SigninType(), $entity);
         $form->submit($request);
         $data = $form->getData();
 
-    	$em = $this->getDoctrine()->getManager();
+    	  $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('UCrmCoreBundle:User')
                 ->findOneBy(['email' => $data->getEmail()]);
 
         $session = $this->getRequest()->getSession();
 
-        if (!$user->isPasswordMatch($data->getPassword())) {
-            $session->getFlashBag()->add('error', 'Unable to log you in at this this');
-            return [];
+        if (!$user || !$user->isPasswordMatch($data->getPassword())) {
+            $session->getFlashBag()->add('error', 'Unable to log you in at this time');
+
+            return [
+              'entity' => $entity,
+              'form'  => $form->createView()
+            ];
         } 
 
         $user->setLastLoginAt(new DateTime());

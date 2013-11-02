@@ -14,6 +14,8 @@ security:
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
 
     firewalls:
+        #secure:
+        #    access_denied_handler: kernel.listener.access_denied.handler
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false

@@ -17,4 +17,15 @@ class TerritoryRepository extends EntityRepository
 			->getQuery()->getResult();
 	}
 
+	public function findAllWithUserFor($user)
+	{
+		return $this->createQueryBuilder('t')
+			->select('t, u')
+			//->from('UCrm\CoreBundle\Entity\Territory', 't')
+			->leftJoin('t.user', 'u')
+			->where('t.checkedOutTo = :uid')
+			->setParameter('uid', $user->getId())
+			->getQuery()->getResult();
+	}
+
 }

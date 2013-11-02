@@ -41,6 +41,32 @@ class TerritoryController extends Controller implements AuthControllerInterface
             'checkout_form' => $checkoutForm->createView()
         );
     }
+
+    /**
+     * Lists all Territory entities assigned to current user
+     *
+     * @Route("/mine", name="territories_mine")
+     * @Method("GET")
+     * @Template()
+     */
+    public function myAction() {
+        $auth = $this->get('core.auth.action_listener');
+        $user = $auth::$user;
+
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('UCrmCoreBundle:Territory')->findAllWithUserFor($user);
+        $checkoutForm = $this->createForm(new TerritoryCheckoutType(), new Territory());
+
+        return array(
+            'entities' => $entities
+        );
+    }
+
     /**
      * Map action
      *
@@ -140,6 +166,32 @@ class TerritoryController extends Controller implements AuthControllerInterface
             'googleApi' => $googleSetting
         );
     }
+
+    /**
+     * Finds and displays print template a Territory entity.
+     *
+     * @Route("/{id}/print", name="territory_print")
+     * @Method("GET")
+     * @Template()
+     */
+    public function printAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('UCrmCoreBundle:Territory')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Territory entity.');
+        }
+
+        $googleSetting = $em->getRepository('UCrmCoreBundle:Setting')->findOneBy(['name' => 'google/api/key']);
+        $people = $em->getRepository('UCrmCoreBundle:Client')->findAllInTerritory($entity);
+
+        return [
+            'people' => $people,
+            'entity' => $entity
+        ];
+    }
+
     /**
      * Finds and displays a Territory entity.
      *
@@ -179,7 +231,7 @@ class TerritoryController extends Controller implements AuthControllerInterface
 
         $type = $request->query->get('type');
         return (isset($type) && $type == 'list') ?
-            $this->render('UCrmCoreBundle:Client:index.html.twig', $vars) :
+            $this->render('UCrmCoreBundle:Territory:people-list.html.twig', $vars) :
             $vars;
     }
 

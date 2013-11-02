@@ -1,4 +1,9 @@
 services:
+  core.auth.denied_listener:
+    class: UCrm\CoreBundle\EventListener\AuthListener
+    arguments: []
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onDenied }
   ucrm.twig.user_extension:
     class: UCrm\CoreBundle\Twig\Extension\UserExtension
     calls:

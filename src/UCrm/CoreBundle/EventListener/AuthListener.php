@@ -5,6 +5,9 @@ namespace UCrm\CoreBundle\EventListener;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+//use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use UCrm\CoreBundle\Controller\AuthControllerInterface;
 use UCrm\CoreBundle\Entity\User;
 
@@ -30,6 +33,8 @@ class AuthListener {
 
         if ($controller[0] instanceof AuthControllerInterface) {
             $request = $event->getRequest();
+            $session = $request->getSession();
+
             $em = $controller[0]->getDoctrine()->getManager();
 
             $apiId  = $request->get('apiId');
@@ -42,8 +47,6 @@ class AuthListener {
 
                 return; // Early return if API validation occurs
             }   
-
-            $session = $request->getSession();
 
             $userId = $session->get('user_id');
             $userHash = $session->get('user_hash');
@@ -64,5 +67,19 @@ class AuthListener {
             }
         }
 	}
+
+    public function onDenied(GetResponseForExceptionEvent $event) {
+        $session = $event->getRequest()->getSession();
+        $exception = $event->getException();
+
+        if (!$exception instanceof AccessDeniedHttpException) {
+            return;
+        }
+
+        $session->getFlashBag()->add('error', $exception->getMessage());    
+        $event->setResponse(new RedirectResponse('/'));
+
+        return;
+    }
 
 }

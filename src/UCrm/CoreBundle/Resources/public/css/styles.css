@@ -1,0 +1,89 @@
+body {
+  padding-top: 70px;
+}
+.top-btns {
+  float: right;
+}
+.top-btns form {
+  display: inline-block;
+}
+#territory_map {
+  width: 100%;
+  height: 100%;
+}
+.Territory.map,
+.Client.map,
+.Territory.coords,
+.Client.coords,
+.Territory.allMap,
+.Client.allMap,
+.Territory.show,
+.Client.show,
+.Territory.people,
+.Client.people {
+  height: 100%;
+}
+.Territory.map body,
+.Client.map body,
+.Territory.coords body,
+.Client.coords body,
+.Territory.allMap body,
+.Client.allMap body,
+.Territory.show body,
+.Client.show body,
+.Territory.people body,
+.Client.people body {
+  height: 100%;
+}
+.Territory.map body > .container,
+.Client.map body > .container,
+.Territory.coords body > .container,
+.Client.coords body > .container,
+.Territory.allMap body > .container,
+.Client.allMap body > .container,
+.Territory.show body > .container,
+.Client.show body > .container,
+.Territory.people body > .container,
+.Client.people body > .container {
+  height: 100%;
+}
+.Territory.map body > .container > .row,
+.Client.map body > .container > .row,
+.Territory.coords body > .container > .row,
+.Client.coords body > .container > .row,
+.Territory.allMap body > .container > .row,
+.Client.allMap body > .container > .row,
+.Territory.show body > .container > .row,
+.Client.show body > .container > .row,
+.Territory.people body > .container > .row,
+.Client.people body > .container > .row {
+  height: 100%;
+}
+.Territory.map body > .container > .row > .col-md-9,
+.Client.map body > .container > .row > .col-md-9,
+.Territory.coords body > .container > .row > .col-md-9,
+.Client.coords body > .container > .row > .col-md-9,
+.Territory.allMap body > .container > .row > .col-md-9,
+.Client.allMap body > .container > .row > .col-md-9,
+.Territory.show body > .container > .row > .col-md-9,
+.Client.show body > .container > .row > .col-md-9,
+.Territory.people body > .container > .row > .col-md-9,
+.Client.people body > .container > .row > .col-md-9 {
+  height: 100%;
+}
+#clientMap {
+  height: 600px;
+  width: 580px;
+}
+@media only screen and (min-width: 720px) and (max-width: 959px) {
+  #clientMap {
+    height: 500px;
+    width: 480px;
+  }
+}
+@media only screen and (max-device-width: 480px) {
+  #clientMap {
+    height: 300px;
+    width: 280px;
+  }
+}

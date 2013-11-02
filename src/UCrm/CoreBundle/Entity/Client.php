@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Client
 {
+
+    public static $genderOpts = ['Male', 'Female'];
+
     /**
      * @var integer
      *
@@ -35,6 +38,13 @@ class Client
      * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      */
     private $lastName;
+
+    /**
+     * @var integer
+     * 
+     * @ORM\Column(name="gender", type="integer")
+     */
+    private $gender;
 
     /**
      * @var integer
@@ -146,6 +156,13 @@ class Client
      * @ORM\Column(name="updated", type="datetime")
      */
     private $updated;
+
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="phone_number", type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
 
 
 
@@ -608,5 +625,56 @@ class Client
     {
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
+    }
+
+    /**
+     * Set gender
+     *
+     * @param integer $gender
+     * @return Client
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return integer 
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    public function getGenderFormatted() 
+    {
+        return ($this->gender) ? self::$genderOpts[$this->gender] : '';
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param string $phoneNumber
+     * @return Client
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return string 
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
     }
 }

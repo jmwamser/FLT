@@ -11,12 +11,19 @@
 
 		if (options.editShape) {
 			for (var i = 0; i < options.editShape.length; i++) {
-				if (!options.editShape[i] || !options.editShape[i].lb || !options.editShape[i].mb) {
+				if (!options.editShape[i] || typeof options.editShape[i] != 'object') {
+					continue;
+				}
+
+				var keys = Object.keys(options.editShape[i]),
+					lat = keys[0],
+					lon = keys[1];
+				if (!options.editShape[i][lat] || !options.editShape[i][lon]) {
 					continue;
 				}
 				
 				this.shapeCoords.push(
-					new google.maps.LatLng(options.editShape[i].lb, options.editShape[i].mb)
+					new google.maps.LatLng(options.editShape[i][lat], options.editShape[i][lon])
 				);
 			}
 		}
@@ -252,7 +259,10 @@
 					coords = [];
 
 				for (var n = 0; n < terr.length; n++) {
-					coords.push(new google.maps.LatLng(terr[n].lb, terr[n].mb));
+					var keys = Object.keys(terr[n]),
+						lat = keys[0],
+						lon = keys[1];
+					coords.push(new google.maps.LatLng(terr[n][lat], terr[n][lon]));
 				}
 
 				var options = {
@@ -362,8 +372,11 @@
 			sumOfLon = 0.0, 
 			total = coords.length;
 		for (var i = 0; i < total; i++) {
-			sumOfLat += parseFloat(coords[i].lb);
-			sumOfLon += parseFloat(coords[i].mb);
+			var keys = Object.keys(coords[i]),
+				lat = keys[0],
+				lon = keys[1];
+			sumOfLat += parseFloat(coords[i][lat]);
+			sumOfLon += parseFloat(coords[i][lon]);
 		}
 
 		return {
@@ -378,14 +391,11 @@
 		    navigator.geolocation.getCurrentPosition(function(position) {
 		      return done(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
 		    }, function() {
-		      handleNoGeolocation(browserSupportFlag);
 		      return fail();
 		    });
-		  }
+		  } else {
 		  	// Browser doesn't support Geolocation
-		  	else {
 		    browserSupportFlag = false;
-		    handleNoGeolocation(browserSupportFlag);
 		    fail();
 		}
 	};

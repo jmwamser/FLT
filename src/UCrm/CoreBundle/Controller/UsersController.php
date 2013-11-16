@@ -71,8 +71,7 @@ class UsersController extends Controller implements AuthControllerInterface
                             'http_host' => $_SERVER['HTTP_HOST']
                         )
                     )
-                )
-            ;
+                );
             $this->get('mailer')->send($message);
 
             return $this->redirect($this->generateUrl('user_show', array('id' => $entity->getId())));

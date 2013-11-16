@@ -1,5 +1,7 @@
 {% extends 'UCrmCoreBundle::layouts/print.html.twig' %}
 
+{% block title -%}Territory {{ entity.code }}{% endblock %}
+
 {% block head %}
 	<style type="text/css">
 		table {
@@ -11,12 +13,18 @@
 			border-bottom: 1px solid black;
 		}
 		.source { text-align: right; }
+		#map img { width: 100%; }
+		#map { margin-bottom: 20px; page-break-after: always; }
 	</style>
 {% endblock %}
 
 {% block body -%}
     <div class="page-header">
         <h1>Territory {{ entity.code }}</h1>
+    </div>
+
+    <div id="map">
+    	<img src="http://maps.googleapis.com/maps/api/staticmap?center={{ mapCenter.lat }},{{ mapCenter.lon }}&zoom=15&size=640x640&scale=2&sensor=false&path={{ mapPath }}" />
     </div>
 
     {% for person in people %}

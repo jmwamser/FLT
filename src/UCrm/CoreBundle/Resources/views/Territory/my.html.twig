@@ -22,7 +22,7 @@
                 <td><a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list">{{ entity.code }}</a></td>
                 <td>
                     <a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list" class="btn btn-default">show</a>
-                    <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="list-group-item">print</a>
+                    <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="btn btn-default">print</a>
                 </td>
             </tr>
         {% endfor %}

@@ -188,7 +188,9 @@ class TerritoryController extends Controller implements AuthControllerInterface
 
         return [
             'people' => $people,
-            'entity' => $entity
+            'entity' => $entity,
+            'mapCenter' => $entity->center(),
+            'mapPath'   => $entity->pathString()
         ];
     }
 
@@ -416,7 +418,10 @@ class TerritoryController extends Controller implements AuthControllerInterface
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('territories_edit', array('id' => $id)));
+            $mailer = $this->get('ucrm.territory_mailer');
+            $mailer->send($entity);
+
+            return $this->redirect($this->generateUrl('territories'));
         }
 
         return array(

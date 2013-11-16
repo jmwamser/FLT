@@ -60,6 +60,7 @@ class UserController extends Controller implements AuthControllerInterface
         $editForm->submit($request);
 
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 

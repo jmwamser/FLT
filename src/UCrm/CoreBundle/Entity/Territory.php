@@ -92,6 +92,9 @@ class Territory
      */
     private $user;
 
+    private $center;
+
+    private $pathString;
 
 
     /**
@@ -326,5 +329,56 @@ class Territory
 
         $interval = $this->getCheckedOutOn()->diff(new \DateTime());
         return $interval ? $interval->format("%d") : "";
+    }
+
+    public function center() 
+    {
+        if (!$this->center) {
+            $this->generateMeta();
+        }
+
+        return $this->center;
+    }
+
+    public function pathString() 
+    {
+        if (!$this->pathString) {
+            $this->generateMeta();
+        }
+
+        return $this->pathString;
+    }
+
+    private function generateMeta() 
+    {
+        $coords = json_decode($this->getCoords(), true);
+
+        $latSum = 0.0;
+        $lonSum = 0.0;
+        $path = "color:0x0000ff|weight:2|fillcolor:0x0000ff";
+        $first = null;
+        foreach ($coords as $coord) {
+            $keys = array_keys($coord);
+
+            $lat = $coord[$keys[0]];
+            $lon = $coord[$keys[1]];
+
+            $latSum += $lat;
+            $lonSum += $lon;
+
+            $path .= "|{$lat},{$lon}";
+
+            if (!$first) {
+                $first = [$lat, $lon];
+            }
+        }
+
+        $total = count($coords);
+        if ($total > 0) {
+            $path .= "|{$first[0]},{$first[1]}";
+        }
+
+        $this->center = ['lat' => $latSum/$total, 'lon' => $lonSum/$total];
+        $this->pathString = $path;
     }
 }

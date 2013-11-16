@@ -20,7 +20,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('territories_show', { 'id': entity.id }) }}">{{ entity.code }}</a></td>
+                <td><a href="{{ path('territory_people', { 'id': entity.id }) }}?type=list">{{ entity.code }}</a></td>
                 <td>
                     {% if entity.status == 1 or entity.status == 2 %}
                         <span class="label label-primary">out {{ entity.howLongOut() }} days</span>

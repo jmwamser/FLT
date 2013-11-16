@@ -11,7 +11,8 @@
 
 {% block body -%}
     <div class="top-btns">
-        <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="list-group-item">Print</a>
+        <a href="{{ path('territory_people', { 'id': entity.id }) }}" class="btn btn-default">Map</a>
+        <a href="{{ path('territory_print', { 'id': entity.id }) }}" class="btn btn-default">Print</a>
     </div>
     <div class="page-header">
         <h1>People</h1>
